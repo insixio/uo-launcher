@@ -15,37 +15,45 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# config files
+# Config files
 *.config
 
-# Dependency directories (remove the comment below to include it)
+# Dependency directories and files
 # vendor/
+node_modules
+bun*
 
-# vscode
+# VScode
 *.code-workspace
 .idea/
 .vscode/
 
-# go workspace file
+# Go workspace files
 go.work
 go.work.sum
 
-# env file
+# Environment files
 .env
-*.env.*
+.env.*
+!.env.example
 
 # build directories
 .builds/
 build/bin
-node_modules
+build/darwin
+build/windows
 frontend/dist
-bun*
+frontend/wailsjs
 
-# misc
-*.log
+# OS files
 .DS_Store
+**/.DS_Store
+.DS_Store?
+
+# Generated data
+*_templ.go
+
+# Misc
+*.log
 tmp/
 sample/
-
-# generated data
-*_templ.go

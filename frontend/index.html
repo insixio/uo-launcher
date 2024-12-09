@@ -13,23 +13,22 @@
   <div id="app">
     <div class="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content flex flex-col items-center justify-center">
-        <div class="mx-auto w-10/12 py-20 rounded-lg shadow-lg backdrop-blur-sm bg-white/10 backdrop-filter">
-          <form id="target-form" class="main-header space-y-6">
+      <div class="flex flex-col justify-center items-center drawer-content">
+        <div class="py-20 mx-auto w-10/12 rounded-lg shadow-lg backdrop-blur-sm bg-white/10 backdrop-filter">
+          <form id="target-form" class="space-y-6 main-header">
             <h1 class="text-2xl antialiased">Select an item from the sidebar to get started </h1>
           </form>
         </div>
-        <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">Open drawer</label>
+        <label for="my-drawer-2" class="lg:hidden btn btn-primary drawer-button">Open drawer</label>
       </div>
       <div class="drawer-side">
         <label for="my-drawer-2" class="drawer-overlay"></label>
-        <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+        <ul class="p-4 w-80 min-h-full menu bg-base-200 text-base-content">
           <img id="logo" class="logo max-w-[50%]" src="src/assets/images/logo-universal.png">
           <div id="initial" hx-get="/initial" hx-trigger="load" hx-target="#initial" hx-swap="outerHTML"></div>
         </ul>
       </div>
     </div>
-  </div>
   </div>
   <div id="modal"></div>
 </body>

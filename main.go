@@ -4,6 +4,7 @@ import (
 	"embed"
 	"log"
 	"net/http"
+	"runtime"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/logger"
@@ -15,10 +16,7 @@ import (
 
 //go:embed all:frontend/dist components
 var assets embed.FS
-
-//go:embed build/appicon.png
-var icon []byte
-var version = "0.0.0"
+var version = "0.0.1"
 
 func main() {
 	// Create an instance of the app structure and custom Middleware
@@ -27,16 +25,16 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:             "Insixio UO Launcher",
-		Width:             1040,
+		Title:             "Insixio UO",
+		Width:             1024,
 		Height:            768,
-		MinWidth:          1040,
-		MinHeight:         768,
-		MaxWidth:          1280,
-		MaxHeight:         800,
+		MinWidth:          390,
+		MinHeight:         844,
+		MaxWidth:          1920,
+		MaxHeight:         1080,
 		DisableResize:     false,
 		Fullscreen:        false,
-		Frameless:         false,
+		Frameless:         runtime.GOOS != "darwin",
 		StartHidden:       false,
 		HideWindowOnClose: false,
 		BackgroundColour:  &options.RGBA{R: 255, G: 255, B: 255, A: 255},
@@ -60,30 +58,23 @@ func main() {
 		},
 		// Windows platform specific options
 		Windows: &windows.Options{
-			WebviewIsTransparent: false,
-			WindowIsTranslucent:  false,
-			DisableWindowIcon:    false,
+			WebviewIsTransparent: true,
+			WindowIsTranslucent:  true,
+			DisableWindowIcon:    true,
 			// DisableFramelessWindowDecorations: false,
 			WebviewUserDataPath: "",
+			BackdropType:        windows.Acrylic,
 			ZoomFactor:          1.0,
 		},
 		// Mac platform specific options
 		Mac: &mac.Options{
-			TitleBar: &mac.TitleBar{
-				TitlebarAppearsTransparent: true,
-				HideTitle:                  false,
-				HideTitleBar:               false,
-				FullSizeContent:            false,
-				UseToolbar:                 false,
-				HideToolbarSeparator:       true,
-			},
-			Appearance:           mac.NSAppearanceNameDarkAqua,
+			TitleBar:             mac.TitleBarHidden(),
+			Appearance:           mac.NSAppearanceNameVibrantLight,
 			WebviewIsTransparent: true,
 			WindowIsTranslucent:  true,
 			About: &mac.AboutInfo{
-				Title:   "Insixio UO Launcher",
-				Message: "",
-				Icon:    icon,
+				Title:   "Insixio UO",
+				Message: "hi",
 			},
 		},
 	})

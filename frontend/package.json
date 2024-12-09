@@ -2,11 +2,11 @@
   "name": "insixio-uo-launcher",
   "version": "0.0.1",
   "devDependencies": {
-    "autoprefixer": "^10.4.15",
+    "autoprefixer": "latest",
     "daisyui": "latest",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.3",
-    "vite": "^4.4.11"
+    "postcss": "latest",
+    "tailwindcss": "latest",
+    "vite": "latest"
   },
   "private": true,
   "scripts": {

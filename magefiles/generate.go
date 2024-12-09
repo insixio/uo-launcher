@@ -1,5 +1,6 @@
-// Usage: go run scripts/generate.go
-// Description: This script generates the necessary files for the project based on go templates.
+//go:build mage
+// +build mage
+
 package main
 
 import (
@@ -8,29 +9,31 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/magefile/mage/mg"
 )
 
-func main() {
-	// data to pass to the templates
-	data := map[string]string{
-		"RepoName":     "github.com/insixio/uo-launcher",
-		"WailsVersion": "v2.9.2",
-		"ProjectName":  "Insixio UO Launcher",
-		"BinaryName":   "insixio-launcher",
-		"AuthorName":   "Insixio",
-		"AuthorEmail":  "ask+launcher@in6.io",
-	}
+// data to be used in the templates
+var templateData = map[string]string{
+	"RepoName":     "github.com/insixio/uo-launcher",
+	"WailsVersion": "v2.9.2",
+	"ProjectName":  "Insixio UO Launcher",
+	"BinaryName":   "insixio-launcher",
+	"AuthorName":   "Insixio",
+	"AuthorEmail":  "ask+launcher@in6.io",
+}
 
-	// list of target template file names
-	targetTemplates := []string{
-		"app.tmpl.go",
-		"go.tmpl.mod",
-		"main.go.tmpl",
-		"wails.tmpl.json",
-		"package-lock.tmpl.json",
-		"package.tmpl.json",
-	}
+// list of template file names
+var templateFiles = []string{
+	"sometemplate.tmpl.go",
+}
 
+// --------------------------------------------------------------------------
+// Generate namespace
+type Generate mg.Namespace
+
+// This script generates the necessary files for the project based on go templates.
+func (Generate) Project() error {
 	// walk through the base directory and its subdirectories
 	err := filepath.WalkDir(".", func(path string, d os.DirEntry, err error) error {
 		if err != nil {
@@ -44,7 +47,7 @@ func main() {
 
 		// check if the file name matches any in the targetTemplates list
 		fileName := filepath.Base(path)
-		if contains(targetTemplates, fileName) {
+		if contains(templateFiles, fileName) {
 			// parse the template
 			tmpl, err := template.ParseFiles(path)
 			if err != nil {
@@ -60,7 +63,7 @@ func main() {
 			defer outputFile.Close()
 
 			// execute the template with the data
-			err = tmpl.Execute(outputFile, data)
+			err = tmpl.Execute(outputFile, templateData)
 			if err != nil {
 				return err
 			}
@@ -77,11 +80,16 @@ func main() {
 		return nil
 	})
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("error traversing path %q: %w", ".", err)
 	}
+
+	return nil
 }
 
-// Helper function to check if a slice contains a specific string
+// --------------------------------------------------------------------------
+// utils
+
+// Helper function to check if a slice contains a specific string.
 func contains(slice []string, item string) bool {
 	for _, element := range slice {
 		if element == item {
